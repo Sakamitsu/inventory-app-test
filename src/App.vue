@@ -1,14 +1,19 @@
 <script setup lang="ts">
   import Menu from './components/Menu.vue'
   import Inventory from './components/Inventory.vue'
+  import Search from './components/Search.vue'
 </script>
 
 <template>
   <div class="app-container">
-    <div class="row-container">
-      <Menu/>
-      <Inventory/>
+    <div class="column-container">
+      <div class="row-container">
+        <Menu/>
+        <Inventory/>
+      </div>
+      <Search/>
     </div>
+
   </div>
 </template>
 
@@ -29,6 +34,13 @@
     background: #1E1E1E;
     & .row-container {
       display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+    }
+    & .column-container {
+      display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       gap: 24px;
