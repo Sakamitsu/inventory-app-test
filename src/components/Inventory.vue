@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue'
+  import ItemInfo from './ItemInfo.vue'
   
   interface Item {
     id: number
@@ -36,6 +37,8 @@
     {id: 24, isEmpty: true,  color: "",      quantity: 0},
   ])
 
+  const isShowItemInfo = ref<boolean>(false);
+
   // function getRandomColor() {
   //   let color = "hsl(" + Math.random() * 360 + ", 100%, 75%)";
   //   return color;
@@ -50,7 +53,7 @@
       return
     }
     const draggedItemId = event.dataTransfer?.getData("draggedItemId")
-    const draggedItem = items.value.find((item) => item.id === Number(draggedItemId)) as Item
+    let draggedItem = items.value.find((item) => item.id === Number(draggedItemId)) as Item
     if (draggedItem.isEmpty) {
       return
     }
@@ -61,12 +64,20 @@
     draggedItem.isEmpty = true;
     draggedItem.color = "";
     draggedItem.quantity = 0;
+
     console.log(droppedItem.id)
+  }
+
+  const showItemInfo = () => {
+    isShowItemInfo.value = true;
   }
 </script>
 
 <template>
   <div class="inventory">
+    <ItemInfo 
+      v-if="isShowItemInfo"
+    />
     <table>
       <tr
         v-for="rowNumber in [1,2,3,4,5]" 
@@ -79,7 +90,8 @@
           @dragstart="startDrag($event, item)"
           @drop="onDrop($event, item)"
           @dragenter.prevent
-          @dragover.prevent 
+          @dragover.prevent
+          @click="showItemInfo" 
         >
           <div 
             class="container"
@@ -101,6 +113,7 @@
 
 <style lang="scss" scoped>
   .inventory {
+    position: relative;
     width: 525px;
     height: 500px;
 
