@@ -32,14 +32,16 @@
   ])
 
   const isShowItemInfo = ref<boolean>(false);
+  
+  const passItem = ref<Item|undefined>(undefined);
 
+  // Генерация случайного светлого цвета на случай, если будет функционал добавления
   // function getRandomColor() {
   //   let color = "hsl(" + Math.random() * 360 + ", 100%, 75%)";
   //   return color;
   // }
 
   const startDrag = (event: DragEvent, draggedItem: Item) => {
-    console.log(draggedItem.id)
     event.dataTransfer?.setData("draggedItemId", String(draggedItem.id))
   }
   const onDrop = (event: DragEvent, droppedItem: Item) => {
@@ -58,11 +60,7 @@
     draggedItem.isEmpty = true;
     draggedItem.color = "";
     draggedItem.quantity = 0;
-
-    console.log(droppedItem.id)
   }
-
-  const passItem = ref<Item|undefined>(undefined);
   
   const showItemInfo = (item: Item) => {
     if (item.isEmpty) {
@@ -124,6 +122,7 @@
 </template>
 
 <style lang="scss" scoped>
+  @import '../assets/style.scss';
   .inventory {
     position: relative;
     width: 525px;
@@ -135,21 +134,22 @@
       margin: 0 auto;
       border-collapse: collapse;
       border-style: hidden;
-      border: 2px solid #4D4D4D;
+      border: 2px solid $border-color;
       border-radius: 12px;
-      background-color: #262626;
+      background-color: $bg-black;
       & td, th {
         position: relative;
         color: white;
-        border: 2px solid #4D4D4D;
+        border: 2px solid $border-color;
+        cursor: pointer;
         span {
           position: absolute;
           bottom: 0px;
           right: 0px;
           width: 16px;
           height: 16px;
-          border-top: 2px solid #4D4D4D;
-          border-left: 2px solid #4D4D4D;
+          border-top: 2px solid $border-color;
+          border-left: 2px solid $border-color;
           border-top-left-radius: 6px;
           padding: 2px;
           color: #7D7D7D;

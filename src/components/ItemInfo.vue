@@ -82,6 +82,7 @@
 </template>
 
 <style lang="scss" scoped>
+  @import '../assets/style.scss';
   .item-info {
     position: absolute;
     display: flex;
@@ -91,11 +92,11 @@
     gap: 16px;
     width: 250px;
     height: 495px;
-    background-color: #262626;
+    background-color: $bg-black;
     z-index: 2;
     right: 0;
     color: white;
-    border: 2px solid #4D4D4D;
+    border: 2px solid $border-color;
     opacity: 95%;
    
     & .container {
@@ -103,7 +104,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background-color: red;
       margin-bottom: 10px;
       & .first {
         width: 115px;
@@ -121,7 +121,7 @@
     hr {
       width: 90%;
       border: 0;
-      border-top: 1px solid #4D4D4D;
+      border-top: 1px solid $border-color;
     }
 
     & .skeletons {
@@ -131,7 +131,7 @@
       flex-direction: column;
       gap: 16px;
       & * {
-        background-color: #3C3C3C;
+        background-color: $bg-gray;
         border-radius: 4px;
       }
       & .stub-1 {
@@ -184,8 +184,8 @@
         width: 210px;
         height: 35px;
         border-radius: 4px;
-        background-color: #262626;
-        border: 2px solid #4D4D4D;
+        background-color: $bg-black;
+        border: 2px solid $border-color;
         color: white;
         outline: none;
         margin-top: 0;

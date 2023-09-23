@@ -10,17 +10,18 @@
 </template>
 
 <style lang="scss" scoped>
+  @import '../assets/style.scss';
   .search {
     position: relative;
     display: flex;
     align-items: center;
     width: 785px;
     height: 72px;
-    background-color: #262626;
-    border: 2px solid #4D4D4D;
+    background-color: $bg-black;
+    border: 2px solid $border-color;
     border-radius: 12px;
     & .skeleton {
-      background-color: #3C3C3C;
+      background-color: $bg-gray;
       width: 699px;
       height: 36px;
       border-radius: 12px;

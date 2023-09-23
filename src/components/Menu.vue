@@ -14,6 +14,7 @@
 </template>
 
 <style lang="scss" scoped>
+  @import '../assets/style.scss';
   .container {
     display: flex;
     justify-content: center;
@@ -22,9 +23,9 @@
     gap: 18px;
     width: 236px;
     height: 500px;
-    background-color: #262626;
+    background-color: $bg-black;
     color: white;
-    border: 2px solid #4D4D4D;
+    border: 2px solid $border-color;
     border-radius: 12px;
     & .skeletons {
       display: flex;
@@ -35,7 +36,7 @@
       width: 190px;
       height: 198px;
       & * {
-        background-color: #3C3C3C;
+        background-color: $bg-gray;
         border-radius: 4px;
       }
       & .stub-1 {
