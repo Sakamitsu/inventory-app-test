@@ -1,16 +1,42 @@
 <script setup lang="ts">
+
+  import { ref } from 'vue';
+  import Item from '../models/Item'
+
+  const isDeleteItem = ref<boolean>(false);
+  const inputValue = ref<number>();
+  
+  const props = defineProps<{
+    item?: Item
+  }>()
+
+  const emit = defineEmits<{
+    (e: "close"): void
+    (e: "decreaseQuantity", quantity: number): number
+  }>()
+
+  const deleteItem = () => {
+    if (inputValue === undefined || Number(inputValue) > Number(props.item?.quantity)) {
+      return
+    }
+    emit("decreaseQuantity", Number(inputValue.value))
+    emit("close")
+  }
 </script>
 
 <template>
   <div class="item-info">
-    <div class="cross">
+    <div 
+      class="cross"
+      @click="emit('close')"
+    >
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 1.05L10.95 0L6 4.95L1.05 0L0 1.05L4.95 6L0 10.95L1.05 12L6 7.05L10.95 12L12 10.95L7.05 6L12 1.05Z" fill="white"/>
       </svg>
     </div>
     <div class="container">
-      <div class="first"  :style="{ backgroundColor: `color-mix(in srgb, green 88%, white)` }"></div>
-      <div class="second" :style="{ backgroundColor: `color-mix(in srgb, green 100%, white)` }"></div>
+      <div class="first"  :style="{ backgroundColor: `color-mix(in srgb, ${item?.color} 88%, white)` }"></div>
+      <div class="second" :style="{ backgroundColor: `color-mix(in srgb, ${item?.color} 100%, white)` }"></div>
     </div>
     <hr>
     <div class="skeletons">
@@ -22,7 +48,36 @@
       <div class="stub-6"></div>
     </div>
     <hr>
-    <button>Удалить предмет</button>
+    <button
+      v-if="isDeleteItem === false"
+      @click="isDeleteItem = true"
+    >
+      Удалить предмет
+    </button>
+    <div 
+      v-else
+      class="delete-block"
+    >
+      <input 
+        type="number" 
+        placeholder="Введите количество"
+        v-model="inputValue"
+      >
+      <div class="two-buttons">
+        <button 
+          class="cancel"
+          @click="emit('close')"
+        >
+          Отмена
+        </button>
+        <button 
+          class="confirm"
+          @click="deleteItem"
+        >
+          Подтвердить
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -49,7 +104,7 @@
       justify-content: center;
       align-items: center;
       background-color: red;
-      margin-bottom: 30px;
+      margin-bottom: 10px;
       & .first {
         width: 115px;
         height: 115px;
@@ -114,6 +169,44 @@
       right: 8px;
       width: 24px;
       height: 24px;
+      cursor: pointer;
+    }
+
+    & .delete-block {
+      bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      & input {
+
+        width: 210px;
+        height: 35px;
+        border-radius: 4px;
+        background-color: #262626;
+        border: 2px solid #4D4D4D;
+        color: white;
+        outline: none;
+        margin-top: 0;
+        text-align: center;
+      }
+
+      & .two-buttons {
+        display: flex;
+        gap: 10px;
+
+        & .cancel {
+          width: 88px;
+          height: 33px;
+          background-color: white;
+          color: black;
+        }
+        & .confirm {
+          width: 112px;
+          height: 33px;
+        }
+      }
     }
   }
 </style>

@@ -1,13 +1,7 @@
 <script setup lang="ts">
   import { ref } from 'vue'
   import ItemInfo from './ItemInfo.vue'
-  
-  interface Item {
-    id: number
-    isEmpty: boolean
-    color: string
-    quantity: number
-  }
+  import Item from '../models/Item'
   
   const items = ref<Item[]>([
     {id: 0,  isEmpty: false, color: "#7FAA65", quantity: 4},
@@ -68,16 +62,34 @@
     console.log(droppedItem.id)
   }
 
-  const showItemInfo = () => {
+  const passItem = ref<Item|undefined>(undefined);
+  
+  const showItemInfo = (item: Item) => {
+    if (item.isEmpty) {
+      return
+    }
     isShowItemInfo.value = true;
+    passItem.value = item;
   }
+  const decreaseQuantity = (quantity: number) => {
+    const item = items.value.find((item) => item.id === (passItem.value as Item).id) as Item
+    item.quantity -= quantity;
+
+    passItem.value = undefined;
+  }
+
 </script>
 
 <template>
   <div class="inventory">
-    <ItemInfo 
+    <Transition name="slide-fade">
+      <ItemInfo 
       v-if="isShowItemInfo"
-    />
+      @close="isShowItemInfo = false"
+      @decrease-quantity="decreaseQuantity"
+      :item="passItem"
+      />
+    </Transition>
     <table>
       <tr
         v-for="rowNumber in [1,2,3,4,5]" 
@@ -91,11 +103,11 @@
           @drop="onDrop($event, item)"
           @dragenter.prevent
           @dragover.prevent
-          @click="showItemInfo" 
+          @click="showItemInfo(item)" 
         >
           <div 
             class="container"
-            v-if="!item.isEmpty"
+            v-if="!item.isEmpty && item.quantity>0"
           >
             <div class="first"  :style="{ backgroundColor: `color-mix(in srgb, ${item.color} 88%, white)` }"></div>
             <div class="second" :style="{ backgroundColor: `color-mix(in srgb, ${item.color} 100%, white)` }"></div>
@@ -170,5 +182,15 @@
         height: 95px;
       }
     }
+    .slide-fade-enter-active {
+      transition: all 0.3s ease-out;
+    }
+    .slide-fade-leave-active {
+      transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+    }
+    .slide-fade-enter-from, .slide-fade-leave-to {
+      transform: translateX(20px);
+      opacity: 0;
+    } 
   }
 </style>
